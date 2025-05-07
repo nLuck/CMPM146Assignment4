@@ -45,4 +45,24 @@ public class AIWaypointManager
         if (waypoints.Count <= i) return null;
         return waypoints[i];
     }
+
+    public AIWaypoint GetFurthest(Vector3 point)
+    {
+        if (waypoints.Count == 0) return null;
+        return waypoints.Aggregate((a, b) => (a.position - point).sqrMagnitude > (b.position - point).sqrMagnitude ? a : b);
+    }
+
+    public Transform GetOffsetWaypoint(Transform waypoint, float offset)
+    {
+        if (waypoint == null) return null;
+        Vector3 offsetPos = waypoint.position + new Vector3(offset, 0, 0);
+        GameObject offsetObj = new GameObject("OffsetWaypoint");
+        offsetObj.transform.position = offsetPos;
+        return offsetObj.transform;
+    }
+
+    public List<AIWaypoint> GetAllSafeWaypoints()
+    {
+        return waypoints.FindAll(wp => wp.type == AIWaypoint.Type.SAFE);
+    }
 }

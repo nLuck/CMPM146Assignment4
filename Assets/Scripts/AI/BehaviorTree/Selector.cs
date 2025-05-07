@@ -4,6 +4,12 @@ public class Selector : InteriorNode
 {
     public override Result Run()
     {
+        foreach (var child in children) {
+            Result res = child.Run();
+            if (res == Result.SUCCESS || res == Result.IN_PROGRESS) {
+                return res;
+            }
+        }
         return Result.FAILURE;
     }
 
